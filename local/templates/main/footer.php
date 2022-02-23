@@ -1,7 +1,6 @@
 
 </div>
 
-
 <!-- Footer Section Start -->
 <footer class="footer">
     <div class="footer-body">
