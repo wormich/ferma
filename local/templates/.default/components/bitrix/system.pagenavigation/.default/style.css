@@ -1,0 +1,36 @@
+
+.pager {
+    display: block;
+    margin: 10px auto;
+    width: 100%;
+}
+
+.pager__items {
+    text-align: center;
+}
+
+.pager__item {
+    display: inline-block;
+}
+
+.pager__item.is-active a {
+    color: #c21d3c;
+}
+
+.pager__item a {
+    cursor: pointer;
+    padding: 5px 20px 5px 0;
+    margin-right: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-family: "pantonregular", sans-serif;
+    color: #525252;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.pager__item a:hover {
+    color: #d82043;
+}
