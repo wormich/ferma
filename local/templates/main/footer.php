@@ -7,7 +7,7 @@
     <div class="footer-body">
         <ul class="left-panel list-inline mb-0 p-0">
             <li class="list-inline-item"><a href="/politics/">Политика конфиденциальности</a></li>
-            <li class="list-inline-item"><a href="">Правила пользования</a></li>
+            <li class="list-inline-item"><a >Правила пользования</a></li>
         </ul>
         <div class="right-panel">
             &copy; <?=date("Y");?>. Все права защищены
