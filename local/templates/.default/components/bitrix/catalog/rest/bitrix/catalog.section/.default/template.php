@@ -17,13 +17,13 @@ $this->setFrameMode(true);
 ?>
 
 
-<div class="row">
-
+<div class="row rests_block">
+    <!--RestartBuffer-->
    <?foreach($arResult['ITEMS'] as $rest){?>
 
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card" data-iq-gsap="onStart" data-iq-opacity="0" data-iq-position-y="-40" data-iq-duration=".6" data-iq-delay=".6" data-iq-trigger="scroll" data-iq-ease="none" style="transform: translate(0px, 0px); opacity: 1;">
-            <div class="card-body">
+
                 <div class="d-flex justify-content-between pb-3 ">
                     <div>
                         <div class="heading-title">
@@ -59,32 +59,44 @@ $this->setFrameMode(true);
                     <img src="<?=$rest['PREVIEW_PICTURE']['SRC']?>" class="img-fluid rounded avatar-160" alt="profile-image">
                 </div>
                 <div class="iq-share-btn">
-                    <button type="button" class="btn btn-primary rounded-pill mt-3 me-2">
-                        <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
-                        </svg>
-                        Add review</button>
-                    <button type="button" class="btn bg-white rounded-pill mt-3 me-2 share-btn-white">
+                    <a href="<?=$rest['DETAIL_PAGE_URL'];?>" class="btn btn-primary rounded-pill mt-3 me-2">
+
                         <svg xmlns="http://www.w3.org/2000/svg" width="20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
-                        Direction</button>
+                        Перейти в меню</a>
                     <button type="button" class="btn bg-white rounded-pill mt-3 me-2 share-btn-white">
-                        <svg width="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M19.7381 6.15344C19.7381 3.40256 17.8574 2.2998 15.1496 2.2998H8.7907C6.16614 2.2998 4.19922 3.32737 4.19922 5.96998V20.6938C4.19922 21.4196 4.98017 21.8767 5.61275 21.5219L11.9947 17.9419L18.3215 21.5158C18.9551 21.8727 19.7381 21.4156 19.7381 20.6888V6.15344Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M8.26953 9.02762H15.5878" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
                         </svg>
-                        Bookmark</button>
-                    <button type="button" class="btn bg-white rounded-pill mt-3 share-btn-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                        </svg>
-                        Share</button>
+                        Отзывы</button>
+
                 </div>
-            </div>
+
         </div>
     </div>
 <?}?>
+    <?php
+    $paramName = 'PAGEN_'.$arResult['NAV_RESULT']->NavNum;
+    $paramValue = $arResult['NAV_RESULT']->NavPageNomer;
+    $pageCount = $arResult['NAV_RESULT']->NavPageCount;
+
+    if ($paramValue < $pageCount) {
+        $paramValue = (int) $paramValue + 1;
+        $url = htmlspecialcharsbx(
+            $APPLICATION->GetCurPageParam(
+                sprintf('%s=%s', $paramName, $paramValue),
+                array($paramName, 'AJAX_PAGE',)
+            )
+        );
+        echo sprintf('<div class="ajax-pager-wrap">
+                      <a class="ajax-pager-link" data-wrapper-class="rests_block" href="%s"></a>
+                  </div>',
+            $url);
+    }
+    ?>
+    <!--RestartBuffer-->
+
 </div>
 

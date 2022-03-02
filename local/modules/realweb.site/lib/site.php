@@ -305,12 +305,15 @@ class Site
                     $cntElement,
                     array("*", "UF_*")
                 );
+
                 while ($obElement = $rsElement->GetNext()) {
-                    if ($withElements && !$obElement['ELEMENT_CNT']) {
-                        continue;
-                    }
+
+                    //if ($withElements && !$obElement['ELEMENT_CNT']) {
+                     //   continue;
+                   // }
                     $arResult[$obElement['ID']] = $obElement;
                 }
+
                 $CACHE_MANAGER->RegisterTag("iblock_id_" . $filter['IBLOCK_ID']);
                 $CACHE_MANAGER->EndTagCache();
                 $cache->endDataCache($arResult);

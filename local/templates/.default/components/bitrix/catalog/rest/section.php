@@ -10,11 +10,11 @@ $APPLICATION->IncludeComponent("bitrix:breadcrumb", "", array(
 );
 ?>
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="card mb-3" data-iq-gsap="onStart" data-iq-opacity="0" data-iq-position-y="-40" data-iq-duration=".6"
              data-iq-delay=".4" data-iq-trigger="scroll" data-iq-ease="none"
              style="transform: translate(0px, 0px); opacity: 1;">
-            <div class="card-body">
+            <div >
 
                 <div class="mt-3 iq-fetch">
                     <?
@@ -54,24 +54,7 @@ $APPLICATION->IncludeComponent("bitrix:breadcrumb", "", array(
             </div>
         </div>
     </div>
-    <div class="col-lg-4 mt-5">
-        <div class="card dish-card profile-img3 " data-iq-gsap="onStart" data-iq-opacity="0" data-iq-position-y="-40"
-             data-iq-duration=".6" data-iq-delay=".5" data-iq-trigger="scroll" data-iq-ease="none"
-             style="transform: translate(0px, 0px); opacity: 1;">
-            <div class="card-body">
-                <div class="text-center ">
-                    <div class="profile-img40 ">
-                        <img src="/local/templates/main/assets/images/restaurant/01.png" class="img-fluid rounded-pill"
-                             alt="profile-image">
-                    </div>
-                    <div class="profile-img52 ">
-                        <h2 class="mb-2 profile-img53">50 % off </h2>
-                        <p class="mb-0">The full price of burgers</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 <?php
 $intSectionID = $APPLICATION->IncludeComponent(

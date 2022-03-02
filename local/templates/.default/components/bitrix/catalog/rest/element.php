@@ -17,7 +17,17 @@ $this->setFrameMode(true);
 
 
 ?>
+<?php
+global $APPLICATION;
 
+
+$APPLICATION->IncludeComponent("bitrix:breadcrumb", "", array(
+        "START_FROM" => "0",
+        "PATH" => "",
+        "SITE_ID" => "s1"
+    )
+);
+?>
 <?
 $ElementID = $APPLICATION->IncludeComponent(
     "realweb:catalog.element", "", array(
