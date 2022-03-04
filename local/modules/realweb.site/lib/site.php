@@ -364,4 +364,24 @@ class Site
             }
         }
     }
+    function getIdByCode($code,$iblock_id,$type){
+        if(Loader::includeModule('iblock')){
+            if($type=='IBLOCK_ELEMENT'){
+                $arFilter=array("IBLOCK_ID"=>$iblock_id,"CODE"=>$code);
+                $res=\CIBlockElement::GetList(array(),$arFilter,false,array("nPageSize"=>1),array('ID'));
+                $element=$res->Fetch();
+                if($res->SelectedRowsCount()!=1) return 0;
+                else return $element['ID'];
+            }
+            else if($type=='IBLOCK_SECTION'){
+                $res=\CIBlockSection::GetList(array(),array('IBLOCK_ID'=>$iblock_id,'CODE'=>$code));
+                $section=$res->Fetch();
+                if($res->SelectedRowsCount()!=1) return '<p style="font-weight:bold;color:#ff0000">Раздел не найден</p>';
+                else return $section['ID'];
+            }
+            else{
+                return '<p style="font-weight:bold;color:#ff0000">Укажите тип</p>';
+            }
+        }
+    }
 }

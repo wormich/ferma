@@ -8,13 +8,27 @@ $APPLICATION->IncludeComponent("bitrix:breadcrumb", "", array(
         "SITE_ID" => "s1"
     )
 );
+
+$path_array = explode('/', $arResult['VARIABLES']['SECTION_CODE_PATH']);
+
 ?>
+
+<?php
+if (count($path_array) == 3) {
+    $arResult['PATH_ARRAY'] = $path_array;
+    include_once('bludo.php');
+    exit;
+}
+
+?>
+
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card mb-3" data-iq-gsap="onStart" data-iq-opacity="0" data-iq-position-y="-40" data-iq-duration=".6"
              data-iq-delay=".4" data-iq-trigger="scroll" data-iq-ease="none"
              style="transform: translate(0px, 0px); opacity: 1;">
-            <div >
+            <div>
 
                 <div class="mt-3 iq-fetch">
                     <?

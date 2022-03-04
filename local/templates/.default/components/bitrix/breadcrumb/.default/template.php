@@ -11,7 +11,7 @@ global $APPLICATION;
 if(empty($arResult))
 	return "";
 
-$strReturn = '<ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">';
+$strReturn = '<div style="background:#FFF;z-index:9999;position:relative"><ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">';
 
 
 $itemSize = count($arResult);
@@ -28,7 +28,7 @@ for($index = 0; $index < $itemSize; $index++){
         $strReturn.= '  </li>';
 }
 
-$strReturn .= '</ol>';
+$strReturn .= '</ol></div>';
 
 return $strReturn;
 ?>
