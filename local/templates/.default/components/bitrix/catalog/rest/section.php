@@ -17,7 +17,7 @@ $path_array = explode('/', $arResult['VARIABLES']['SECTION_CODE_PATH']);
 if (count($path_array) == 3) {
     $arResult['PATH_ARRAY'] = $path_array;
     include_once('bludo.php');
-    exit;
+
 }
 
 ?>

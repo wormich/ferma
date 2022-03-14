@@ -398,8 +398,8 @@
   if (jQuery("#admin-chart-7").length) {
       const options = {
           series: [{
-              name: 'Product',
-              data: [3.3, 2.9, 3.8, 9.1, 6.0, 2.8, 4.5]
+              name: 'Количество заказов по дням',
+              data: [15, 11, 20, 9, 6, 12, 14]
           }],
           chart: {
               height: 160,
@@ -470,7 +470,7 @@
               enabled: true,
           },
           xaxis: {
-              categories: ["Sun", "Mon", "The", "Wed", "Thu", "Fri", "Sat"],
+              categories: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
               labels: {
                   minHeight: 20,
                   maxHeight: 20
@@ -495,7 +495,7 @@
                   minWidth: 20,
                   maxWidth: 20,
                   formatter: function(val) {
-                      return val + "%";
+                      return val;
                   }
               }
 
@@ -519,20 +519,20 @@
           switch (type) {
               case 'member':
                   searies = [{
-                      name: 'Product',
+                      name: 'Выручка, тыс. руб.',
                       data: [9.3, 3.9, 8.8, 4.1, 6.0, 2.8, 4.5]
                   }]
                   break;
               case 'customer':
                   searies = [{
-                      name: 'Product',
-                      data: [3.2, 2.8, 4.5, 4.7, 9.1, 8.6, 5.2]
+                      name: 'Новых клиентов',
+                      data: [32, 28, 45, 47, 91, 86, 52]
                   }]
                   break;
               default:
                   searies = [{
-                      name: 'member',
-                      data: [3.3, 2.9, 3.8, 9.1, 6.0, 2.8, 4.5]
+                      name: 'Количество заказов по дням',
+                      data: [15, 11, 20, 9, 6, 12, 14]
                   }]
                   break;
           }

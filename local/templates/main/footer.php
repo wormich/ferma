@@ -17,6 +17,19 @@
 <!-- Footer Section End -->    </main>
 <!-- Wrapper End-->
 <!-- offcanvas start -->
+<? $APPLICATION->IncludeComponent(
+    "beehive:cart",
+    "cart_block",
+    array(
+        "COMPONENT_TEMPLATE" => "cart_block",
+        "BEE_VIEW_BLOCK_TOP" => "",
+        "BEE_VIEW_ICON_COLOR" => "",
+        "BEE_VIEW_COUNT_COLOR" => "",
+        "BEE_VIEW_BTN_COLOR" => "",
+        "BEE_VIEW_POSITION" => "RIGHT"
+    ),
+    false
+);?>
 
 </body>
 </html>

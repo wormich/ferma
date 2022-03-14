@@ -11,7 +11,7 @@ global $APPLICATION;
 if(empty($arResult))
 	return "";
 
-$strReturn = '<div style="background:#FFF;z-index:9999;position:relative"><ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">';
+$strReturn = '<div style="background:#FFF;z-index:99;position:relative"><ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">';
 
 
 $itemSize = count($arResult);

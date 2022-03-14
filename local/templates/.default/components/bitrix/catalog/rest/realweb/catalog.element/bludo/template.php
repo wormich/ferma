@@ -35,7 +35,7 @@ $MENU_IBLOCK = \Realweb\Site\Site::getIblockId('menu');
 
                         <p class="mb-4"><?= $arResult['PREVIEW_TEXT']; ?></p>
 
-                        <button type="button" class="btn btn-primary rounded mb-4">Добавить в корзину</button>
+                        <button type="button" class="btn btn-primary rounded mb-4 product-buy-link" data-id="<?=$arResult["ID"]?>">Добавить в корзину</button>
 
                     </div>
                 </div>

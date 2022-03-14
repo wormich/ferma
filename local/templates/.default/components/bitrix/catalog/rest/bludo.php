@@ -1,8 +1,9 @@
 <?php
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
+    die();
 //Страница блюда
 $APPLICATION->AddChainItem("Бургеры", "/menu/" . $arResult['PATH_ARRAY'][0] . '/');
 $APPLICATION->AddChainItem("Макдональдс", "/menu/" . $arResult['PATH_ARRAY'][0] . '/' . $arResult['PATH_ARRAY'][1] . '/');
-
 
 
 $arParams["IBLOCK_ID"] = \Realweb\Site\Site::getIblockId('menu');
@@ -10,20 +11,17 @@ $arParams["IBLOCK_TYPE"] = 'catalog';
 
 ?>
 
-    <pre>
 
-    <?
+<?
 
-    $element_code = end($arResult['PATH_ARRAY']);
-
-
-    $arResult["VARIABLES"]["ELEMENT_ID"] = \Realweb\Site\Site::getIdByCode($element_code, $arParams["IBLOCK_ID"], 'IBLOCK_ELEMENT');
-    $arResult["VARIABLES"]["ELEMENT_CODE"] = $element_code;
+$element_code = end($arResult['PATH_ARRAY']);
 
 
-    ?>
+$arResult["VARIABLES"]["ELEMENT_ID"] = \Realweb\Site\Site::getIdByCode($element_code, $arParams["IBLOCK_ID"], 'IBLOCK_ELEMENT');
+$arResult["VARIABLES"]["ELEMENT_CODE"] = $element_code;
 
-</pre>
+
+?>
 
 
 <?
@@ -110,7 +108,7 @@ $ElementID = $APPLICATION->IncludeComponent(
     'DISPLAY_NAME' => (isset($arParams['DETAIL_DISPLAY_NAME']) ? $arParams['DETAIL_DISPLAY_NAME'] : ''),
     'ADD_DETAIL_TO_SLIDER' => (isset($arParams['DETAIL_ADD_DETAIL_TO_SLIDER']) ? $arParams['DETAIL_ADD_DETAIL_TO_SLIDER'] : ''),
     'TEMPLATE_THEME' => (isset($arParams['TEMPLATE_THEME']) ? $arParams['TEMPLATE_THEME'] : ''),
-    "ADD_SECTIONS_CHAIN" =>  'N',
+    "ADD_SECTIONS_CHAIN" => 'N',
     "ADD_ELEMENT_CHAIN" => (isset($arParams["ADD_ELEMENT_CHAIN"]) ? $arParams["ADD_ELEMENT_CHAIN"] : ''),
     "DISPLAY_PREVIEW_TEXT_MODE" => (isset($arParams['DETAIL_DISPLAY_PREVIEW_TEXT_MODE']) ? $arParams['DETAIL_DISPLAY_PREVIEW_TEXT_MODE'] : ''),
     "DETAIL_PICTURE_MODE" => (isset($arParams['DETAIL_DETAIL_PICTURE_MODE']) ? $arParams['DETAIL_DETAIL_PICTURE_MODE'] : ''),
