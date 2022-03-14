@@ -2,7 +2,7 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Кабинет ресторатора");
 ?>
-
+<?if($USER->IsAuthorized()):?>
 <aside class="sidebar sidebar-default sidebar-hover sidebar-mini navs-pill-all ">
 
     <div class="sidebar-body pt-0 data-scrollbar">
@@ -1408,6 +1408,14 @@ $APPLICATION->SetTitle("Кабинет ресторатора");
 
     </div>
 
-    
+    <?else:?>
 
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+    <?
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: /personal/auth/");
+        exit();
+        ?>
+
+    <?endif;?>
+
+    <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

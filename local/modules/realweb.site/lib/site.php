@@ -342,28 +342,7 @@ class Site
         return $f5;
     }
 
-    public function getClinic()
-    {
-        if ($clinicId = Application::getInstance()->getContext()->getRequest()->getCookie('clinic')) {
-            $this->_city = $this->_getClinic(array('ID' => $clinicId));
-        }else{
 
-            $this->_city = $this->_getClinic(array('ID' => 335));
-        }
-
-        return $this->_city;
-    }
-
-    private function _getClinic($filter = array())
-    {
-        if (Loader::includeModule('iblock')) {
-            $res = \CIBlockElement::GetByID($filter['ID']);
-            if ($ar_res = $res->GetNext()) {
-
-                return $ar_res;
-            }
-        }
-    }
     function getIdByCode($code,$iblock_id,$type){
         if(Loader::includeModule('iblock')){
             if($type=='IBLOCK_ELEMENT'){
