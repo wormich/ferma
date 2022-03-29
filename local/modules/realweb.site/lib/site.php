@@ -252,7 +252,7 @@ class Site
             } elseif ($cache->StartDataCache()) {
                 $CACHE_MANAGER->StartTagCache($cacheDir);
                 $rsElement = \CIBlockElement::GetList(
-                    array("SORT" => "ASC"),
+                    array("SORT" => "ASC","DATE_ACTIVE_FROM"=>"DESC"),
                     $filter,
                     false,
                     false,
@@ -311,7 +311,7 @@ class Site
                     //if ($withElements && !$obElement['ELEMENT_CNT']) {
                      //   continue;
                    // }
-                    $arResult[$obElement['ID']] = $obElement;
+                    $arResult[] = $obElement;
                 }
 
                 $CACHE_MANAGER->RegisterTag("iblock_id_" . $filter['IBLOCK_ID']);
@@ -362,5 +362,9 @@ class Site
                 return '<p style="font-weight:bold;color:#ff0000">Укажите тип</p>';
             }
         }
+    }
+    function getPathbyBludo($id=0){
+        //Получает путь к блюду
+
     }
 }

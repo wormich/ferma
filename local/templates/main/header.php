@@ -29,6 +29,7 @@ Asset::getInstance()->addJs('/local/templates/main/assets/js/app.js');
 Asset::getInstance()->addJs('/local/templates/main/assets/vendor/moment.min.js');
 
 Asset::getInstance()->addJs('/local/templates/main/assets/js/charts/dashboard.js');
+Asset::getInstance()->addJs('/local/templates/main/js/custom.js');
 ?>
     <link rel="shortcut icon" href="/local/templates/main/assets/images/favicon.ico" />
 
@@ -45,7 +46,7 @@ Asset::getInstance()->addJs('/local/templates/main/assets/js/charts/dashboard.js
 
 
 
-<body class="  "  style="background:url(../assets/images/dashboard.png);    background-attachment: fixed;
+<body class="  "  style="background:url(/local/templates/main/assets/images/dashboard.png);    background-attachment: fixed;
     background-size: cover;">
 <div id="panel"><?$APPLICATION->ShowPanel();?></div>
 
