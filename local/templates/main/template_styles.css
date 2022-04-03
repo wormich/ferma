@@ -10,3 +10,6 @@
 .success_form,.error_form{
     display:none;
 }
+#rest_success{
+    display:none;
+}

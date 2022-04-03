@@ -28,6 +28,11 @@ Asset::getInstance()->addJs('/local/templates/main/assets/js/form-wizard.js');
 Asset::getInstance()->addJs('/local/templates/main/assets/js/app.js');
 Asset::getInstance()->addJs('/local/templates/main/assets/vendor/moment.min.js');
 
+Asset::getInstance()->addJs('/local/templates/main/bootstrap-switch/js/bootstrap4-toggle.min.js');
+
+
+
+
 Asset::getInstance()->addJs('/local/templates/main/assets/js/charts/dashboard.js');
 Asset::getInstance()->addJs('/local/templates/main/js/custom.js');
 ?>
@@ -36,10 +41,12 @@ Asset::getInstance()->addJs('/local/templates/main/js/custom.js');
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="/local/templates/main/assets/css/core/libs.min.css">
 
+
+
     <!-- Custom Css -->
     <link rel="stylesheet" href="/local/templates/main/assets/css/aprycot.min.css?v=1.0.0">
 
-
+    <link rel="stylesheet" href="/local/templates/main/bootstrap-switch/css/bootstrap4-toggle.min.css">
 
 
 </head>
@@ -530,6 +537,8 @@ Asset::getInstance()->addJs('/local/templates/main/js/custom.js');
 
 
     <div class="position-relative">
+
+
         <!--Nav Start-->
         <nav class="nav navbar navbar-expand-lg navbar-light iq-navbar">
             <div class="container-fluid navbar-inner">

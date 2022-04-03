@@ -11,10 +11,16 @@
         </div>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-        <li><a class="dropdown-item" href="">Личный кабинет</a></li>
+        <li><a class="dropdown-item" href="/personal/">Личный кабинет</a></li>
 
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="/?logout=Y">Выйти</a></li>
+        <li><a class="dropdown-item" href="<?echo $APPLICATION->GetCurPageParam("logout=yes&".bitrix_sessid_get(), [
+                    "login",
+                    "logout",
+                    "register",
+                    "forgot_password",
+                    "change_password"]
+            );?>">Выйти</a></li>
     </ul>
     <?}else{?>
 

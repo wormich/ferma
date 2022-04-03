@@ -78,6 +78,91 @@ class Action
         }
         return $result;
     }
+    public function make_company()
+    {
+
+        $request = $this->_getRequest();
+        global $USER;
+        if (empty($request['FIELDS']) || empty($request['PROPS'])) {
+            $this->arResult['STATUS'] = 'error';
+            $this->arResult["MESSAGE"] = "Ошибка заполения данных";
+            return 0;
+        }
+        $files = $request->getFileList()->toArray();
+        $arProps = $request['PROPS'];
+        $this->arParams['IBLOCK_ID']=Site::getIblockId('rest');
+        $arFields = Array(
+            "MODIFIED_BY" => $USER->GetID(),
+            "IBLOCK_SECTION" => $request['FIELDS']['IBLOCK_SECTION'],
+            "IBLOCK_ID" => Site::getIblockId('rest'),
+            "NAME" => $request['FIELDS']['NAME'],
+            "PREVIEW_TEXT" => $request['FIELDS']['PREVIEW_TEXT'],
+            "PREVIEW_TEXT_TYPE" => 'TEXT',
+            "DETAIL_TEXT" => $request['FIELDS']['DETAIL_TEXT'],
+            "DETAIL_TEXT_TYPE" => 'TEXT',
+        );
+
+        if (!empty($files['FIELDS'])) {
+            $arFieldFiles = $this->getFileArray($files['FIELDS']);
+            if (!empty($arFieldFiles)) {
+                $arFields = array_merge($arFields, $arFieldFiles);
+            }
+        }
+        if (!empty($files['PROPS'])) {
+            $arPropsFiles = $this->getFileArray($files['PROPS']);
+            if (!empty($arPropsFiles)) {
+                $arProps = array_merge($arProps, $arPropsFiles);
+            }
+        }
+
+        $el = new \CIBlockElement();
+        if ($id = $request['FIELDS']['ID']) {
+
+            if ($element = \Bitrix\Iblock\ElementTable::query()
+                ->setSelect(['ID'])
+                ->setFilter(['ID' => $id, 'IBLOCK_ID' => $this->arParams['IBLOCK_ID'], 'CREATED_BY' => $USER->GetID()])
+                ->exec()
+                ->fetch()
+            ) {
+                unset($arFields['CODE']);
+                if ($el->Update($id, $arFields)) {
+
+                    $this->arResult["MESSAGE"] = "Сохранение успешно выполнено";
+                    $this->arResult['STATUS'] = 'success';
+                    $this->arResult['ITEM']['ID'] = $id;
+                    if (!empty($this->request['PROP_del'])) {
+                        foreach ($this->request['PROP_del'] as $propCode => $values) {
+                            $obProp = \CIBlockElement::GetProperty($this->arParams['IBLOCK_ID'], $id, 'ID', 'DESC', array('CODE' => $propCode));
+                            while ($arProp = $obProp->GetNext()) {
+                                $propertyValues[$arProp['VALUE']] = $arProp;
+                            }
+                            if (!empty($propertyValues)) {
+                                foreach ($values as $value) {
+                                    if ($valueId = $propertyValues[$value]['PROPERTY_VALUE_ID']) {
+                                        \CIBlockElement::SetPropertyValueCode($id, $propCode, array($valueId => array('del' => 'Y')));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    foreach ($arProps as $code => $value) {
+                        if ($this->arResult['PROPS'][$code]['PROPERTY_TYPE'] == 'F' && $this->arResult['PROPS'][$code]['MULTIPLE'] == 'Y') {
+                            \CIBlockElement::SetPropertyValueCode($id, $code, $value);
+                        } else {
+                            \CIBlockElement::SetPropertyValuesEx($id, $this->arParams['IBLOCK_ID'], [$code => $value]);
+                        }
+                    }
+
+                } else {
+                    $this->arResult['STATUS'] = 'error';
+                    $this->arResult["MESSAGE"] = $el->LAST_ERROR;
+                }
+            }
+
+        }
+
+        return !empty($this->arResult) ? $this->arResult : false;
+    }
 }
 
 ?>

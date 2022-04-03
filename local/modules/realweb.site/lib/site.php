@@ -261,6 +261,11 @@ class Site
                 while ($obElement = $rsElement->GetNextElement()) {
                     $arFields = $obElement->GetFields();
                     $arFields['FIELDS'] = $arFields;
+                    $arFields['IBLOCK_SECTION'] = [];
+                    $rsGroups = \CIBlockElement::GetElementGroups($arFields['ID'], true);
+                    while($arGroup = $rsGroups->Fetch()) {
+                        $arFields['IBLOCK_SECTION'][] = $arGroup["ID"];
+                    }
                     if ($arFields['PREVIEW_PICTURE']) $arFields['PREVIEW_PICTURE'] = \CFile::GetFileArray($arFields['PREVIEW_PICTURE']);
                     if ($arFields['DETAIL_PICTURE']) $arFields['DETAIL_PICTURE'] = \CFile::GetFileArray($arFields['DETAIL_PICTURE']);
                     $arFields['PROPERTIES'] = $obElement->GetProperties();
