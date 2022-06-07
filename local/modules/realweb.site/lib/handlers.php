@@ -29,4 +29,33 @@ class Handlers
 
         return $arFields;
     }
+
+    function OnBeforeItemAddHandler(&$arFields)
+    {
+
+        if (!empty($arFields["PARAMS"]["ADDS"])) {
+            $arFields["PARAMS_STR"] = '';
+
+            $titles = [];
+            foreach ($arFields["PARAMS"]["ADDS"] as $add) {
+                $titles[] = $add['text'];
+            }
+            $arFields["PARAMS_STR"] = implode('; ', $titles);
+        }
+
+    }
+
+    function OnAfterItemLoadHandler(&$arFields)
+    {
+        if (!empty($arFields["PARAMS"]["ADDS"])){
+            $prc=$arFields["PRICE"];
+            foreach ($arFields["PARAMS"]["ADDS"] as $add) {
+                $prc=$prc+$add['price'];
+            }
+
+            //Получение цены в зависимости от параметров
+            $arFields["PRICE"] = $prc;
+        }
+    }
+
 }

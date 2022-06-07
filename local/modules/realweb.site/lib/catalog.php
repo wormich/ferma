@@ -9,6 +9,137 @@ use Bitrix\Main\Data\Cache;
 
 class Catalog
 {
+    public function getRestByBludo($id = 0)
+    {
+        //Инфа о ресторане по ID блюда
+        $ib_id = Site::getIblockId('menu');
+        $ib_rest = Site::getIblockId('rest');
+        $bludo = Site::getIBlockElements(['IBLOCK_ID' => $ib_id, 'ID' => $id]);
+        $rest_id = 0;
+        $result = [];
+        foreach ($bludo as $b) {
+
+            $rest_id = $b['PROPERTIES']['REST']['VALUE'];
+        }
+        if ($rest_id>0){
+            $rest = Site::getIBlockElements(['IBLOCK_ID' => $ib_rest, 'ID' => $rest_id]);
+            foreach ($rest as $r) {
+
+                $result = $r;
+            }
+        }
+
+      return $result;
+
+    }
+
+    public function get_rest_info_list($arF)
+    {
+        //Инфа о ресторане для списка
+        $result = [];
+        if (Loader::includeModule("iblock")) {
+            if (!empty($arF)) {
+
+                $menu = \CIBlockElement::GetList(array(), $arF, array('ID', 'IBLOCK_ID', 'PROPERTY_PRICE'), false);
+                $cnt = 0;
+                $prices = [];
+                while ($arFields = $menu->GetNext()) {
+
+                    $prices[] = $arFields['PROPERTY_PRICE_VALUE'];
+                    $cnt++;
+
+                }
+
+                $result = ['MIN' => min($prices), 'CNT' => $cnt];
+
+            }
+        }
+        return $result;
+
+    }
+
+    public function get_popular($brand_id = 0)
+    {
+        //Получает популярные блюда ресторана
+        $result = [];
+        $MENU_IBLOCK = Site::getIblockId('menu');
+        if ($brand_id > 0) {
+
+            $arFilterb = ['IBLOCK_ID' => $MENU_IBLOCK, 'PROPERTY_REST_VALUE' => $brand_id, 'PROPERTY_RECOMMEND_VALUE' => 'Да'];
+            $result = Site::getIBlockElements($arFilterb);
+
+        }
+
+        return $result;
+    }
+
+    public function get_bluda_categ($category_id = 0)
+    {
+        //Получает популярные блюда ресторана
+        $result = [];
+        $MENU_IBLOCK = Site::getIblockId('menu');
+        if ($category_id > 0) {
+
+            $arFilterb = ['IBLOCK_ID' => $MENU_IBLOCK, 'IBLOCK_SECTION_ID' => $category_id, 'PROPERTY_TYPE_VALUE' => 'Основное блюдо'];
+            $bluda = Site::getIBlockElements($arFilterb);
+            $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById(2)->fetch();
+            $entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlblock);
+            foreach ($bluda as $key => $item) {
+
+
+                $entity_data_class = $entity->getDataClass();
+
+                $rsData = $entity_data_class::getList(array(
+                    "select" => array("*"),
+                    "order" => array("ID" => "ASC"),
+                    "filter" => array("UF_BLUDO" => $item['ID'])  // Задаем параметры фильтра выборки
+                ));
+                $vals = [];
+
+                while ($arData = $rsData->Fetch()) {
+
+                    $vals[] = $arData;
+                }
+                $result[$key] = $item;
+
+                $result[$key]['adds'] = $vals;
+
+            }
+
+
+        }
+
+        return $result;
+    }
+
+    public function get_rest_actions()
+    {
+        //выбор ресторанов с акциями
+        $rests = [];
+        $arF = ['IBLOCK_ID' => \Realweb\Site\Site::getIblockId('menu'), '>PROPERTY_REST' => 0, '>OLD_PRICE' => 0, 'PROPERTY_TYPE_VALUE' => 'Основное блюдо'];
+        if (Loader::includeModule("iblock")) {
+            if (!empty($arF)) {
+
+                $menu = \CIBlockElement::GetList(array(), $arF, array('ID', 'IBLOCK_ID', 'PROPERTY_REST'), false);
+
+
+                while ($arFields = $menu->GetNext()) {
+
+                    $rests[] = $arFields['PROPERTY_REST_VALUE'];
+
+
+                }
+
+                $rests = array_unique($rests);
+
+                $result = ['MIN' => min($prices), 'CNT' => $cnt];
+
+            }
+        }
+        return $rests;
+
+    }
+
     public static function getCatalogSectionParams($params = array(), $isAvailable = false)
     {
         $result = array_merge(array(
@@ -145,7 +276,7 @@ class Catalog
     {
         $result = [];
         $uri = new Uri(Application::getInstance()->getContext()->getRequest()->
-            getRequestUri());
+        getRequestUri());
         $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
         $sortValue = ["cheap" => array(
             'name' => "Сначала дешевые",
@@ -159,13 +290,13 @@ class Catalog
             'ORDER' => 'DESC'), "name" => array(
             'name' => "По популярности",
             'code' => 'TIMESTAMP_X',
-            'ORDER' => 'DESC'), ];
-        $sort = $request->get("sort") ? : Site::getCookie('catalog_sort');
-        $order = $request->get("order") ? : Site::getCookie('catalog_order');
+            'ORDER' => 'DESC'),];
+        $sort = $request->get("sort") ?: Site::getCookie('catalog_sort');
+        $order = $request->get("order") ?: Site::getCookie('catalog_order');
         foreach ($sortValue as $key => $item) {
             $sortItem = ["name" => $item['name'], "field" => $item['code'], "order" => $item['ORDER'],
                 "selected" => ($key == $sort), "url" => $uri->deleteParams(["bxajaxid"])->
-                addParams(["sort" => $key, "order" => $item['ORDER']])->getUri(), ];
+                addParams(["sort" => $key, "order" => $item['ORDER']])->getUri(),];
             if ($sortItem['selected']) {
 
                 $arPrams['ELEMENT_SORT_FIELD2'] = 'catalog_QUANTITY';
@@ -186,16 +317,16 @@ class Catalog
     {
         $result = [];
         $uri = new Uri(Application::getInstance()->getContext()->getRequest()->
-            getRequestUri());
+        getRequestUri());
         $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
         $countValue = ["9" => array('name' => "9 на странице"), "12" => array('name' =>
-                "12 на странице"), "15" => array('name' => "15 на странице"), ];
-        $count = $request->get("count_view") ? : Site::getCookie('count_view', 9);
+            "12 на странице"), "15" => array('name' => "15 на странице"),];
+        $count = $request->get("count_view") ?: Site::getCookie('count_view', 9);
         foreach ($countValue as $key => $item) {
             $countItem = ["name" => $item['name'], "selected" => ($key == $count), "url" =>
-                $uri->deleteParams(["bxajaxid"])->addParams(["count_view" => $key])->getUri(), ];
+                $uri->deleteParams(["bxajaxid"])->addParams(["count_view" => $key])->getUri(),];
 
-           if ($countItem['selected']) {
+            if ($countItem['selected']) {
                 $arPrams['PAGE_ELEMENT_COUNT'] = $key;
 
                 Site::setCookie('count_view', $key);
@@ -209,7 +340,7 @@ class Catalog
     public static function getViewedProducts()
     {
         $ids = unserialize(Application::getInstance()->getContext()->getRequest()->
-            getCookie("VIEWED"));
+        getCookie("VIEWED"));
         return $ids;
     }
 
@@ -227,15 +358,18 @@ class Catalog
             } elseif ($cache->StartDataCache()) {
                 $CACHE_MANAGER->StartTagCache($cacheDir);
                 $arProps = Site::getPropEnumValues(array('IBLOCK_ID' => $filter['IBLOCK_ID'],
-                        'CODE' => 'TYPE'));
+                    'CODE' => 'TYPE'));
                 $arPropsXmlId = array_column($arProps, 'ID', 'XML_ID');
                 unset($filter['=PROPERTY_' . current($arProps)['PROPERTY_ID']]);
+
                 $rsElement = \CIBlockElement::GetList(array("propertysort_TYPE" => "ASC"), $filter,
                     array('PROPERTY_TYPE'), false);
                 while ($arFields = $rsElement->GetNext()) {
                     $arResult[$arProps[$arFields['PROPERTY_TYPE_ENUM_ID']]['XML_ID']] = $arProps[$arFields['PROPERTY_TYPE_ENUM_ID']];
                     $arResult[$arProps[$arFields['PROPERTY_TYPE_ENUM_ID']]['XML_ID']]['CNT'] = $arFields['CNT'];
                 }
+
+
                 //                foreach ($arProps as $prop) {
                 //                    if (!$arResult[$prop['XML_ID']]) {
                 //                        $arFilter = array('IBLOCK_ID' => $filter['IBLOCK_ID'], 'ACTIVE' => 'Y');

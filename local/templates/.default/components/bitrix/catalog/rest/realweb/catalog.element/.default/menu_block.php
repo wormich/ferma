@@ -1,131 +1,195 @@
 <?
 $arFilter = ['IBLOCK_ID' => $MENU_IBLOCK, 'UF_RES' => $arResult['ID']];
 $sects = \Realweb\Site\Site::getSections($arFilter, false, true);
+$popular = \Realweb\Site\Catalog::get_popular($arResult['ID']);
+
 ?>
-<ul class="nav nav-pills mb-3 nav-fill" id="menu-tab" role="tablist">
+
+    <nav class="card-body">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="navbar-nav nav-fill w-100">
+                <? if (count($popular) > 0) { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#menucat_popular">Популярные блюда</a>
+                    </li>
+                <? } ?>
+                <? $sects1 = array_slice($sects, 0, 5); ?>
+                <? foreach ($sects1 as $key => $s) { ?>
+
+                    <li class="nav-item">
+                        <a class="nav-link <? if ($key == 0) { ?>active<? } ?>"
+                           href="#menucat_<?= $s['ID']; ?>"
+
+                        >
+                            <?= $s["NAME"]; ?>
+                        </a>
+                    </li>
+                <? } ?>
+                <? if (count($sects) > 5) { ?>
+                    <?
+
+                    $sects2 = array_slice($sects, 5, count($sects) - 5);
+                    ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Еще...
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <? foreach ($sects2 as $key => $s) { ?>
+                                <a class="dropdown-item" href="#menucat_<?= $s['ID']; ?>"><?= $s["NAME"]; ?></a>
+                            <? } ?>
 
 
-<? foreach ($sects as $key=>$s) { ?>
-
-    <li class="nav-item">
-        <a class="nav-link <?if ($key==0){?>active<?}?>" data-bs-toggle="pill" href="#menucat_<?=$s['ID'];?>" role="tab" aria-controls="tabmenu"
-
-           aria-selected="<?if ($key==0){?>true<?}else{?>false<?}?>">
-        <?=$s["NAME"];?>
-        </a>
-    </li>
-<?}?>
-</ul>
-
-
-<div class="tab-content" id="menu-tabContent">
-    <? foreach ($sects as $key=>$s) { ?>
-    <div class="tab-pane fade <?if ($key==0){?>show active<?}?>" id="menucat_<?=$s['ID'];?>" role="tabpanel" >
-        <?
-        $arFilterb = ['IBLOCK_ID' => $MENU_IBLOCK, 'IBLOCK_SECTION_ID' => $s['ID'], 'PROPERTY_TYPE_VALUE' => 'Основное блюдо'];
-        $bluda = \Realweb\Site\Site::getIBlockElements($arFilterb);
-        ?>
-        <div class="col-xl-12 col-lg-12 dish-card-horizontal mt-2">
-
-        <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 row-cols-xxl-6">
-            <?
-            foreach ($bluda as $b) {
-                ?>
-
-                <div class="col active"
-                     data-iq-gsap="onStart"
-                     data-iq-opacity="0"
-                     data-iq-position-y="-40"
-                     data-iq-duration=".6"
-                     data-iq-delay=".6"
-                     data-iq-trigger="scroll"
-                     data-iq-ease="none"
-                >
-                    <div class="card card-white dish-card profile-img mb-0">
-                        <div class="profile-img21">
-                            <a href="<?= $b["DETAIL_PAGE_URL"]; ?>">
-                                <img src="<?= $b['PREVIEW_PICTURE']['SRC']; ?>"
-                                     class="img-fluid rounded-pill avatar-170 blur-shadow position-bottom"
-                                     alt="profile-image">
-                                <img src="<?= $b['PREVIEW_PICTURE']['SRC']; ?>"
-                                     class="img-fluid rounded-pill avatar-170 hover-image "
-                                     alt="profile-image"
-                                     data-iq-gsap="onStart"
-                                     data-iq-opacity="0"
-                                     data-iq-scale=".6"
-                                     data-iq-rotate="180"
-                                     data-iq-duration="1"
-                                     data-iq-delay=".6"
-                                     data-iq-trigger="scroll"
-                                     data-iq-ease="none"
-                                >
-                            </a>
                         </div>
-                        <div class="card-body menu-image">
-                            <h6 class="heading-title fw-bolder mt-4 mb-0"><a
-                                        href="<?= $b["DETAIL_PAGE_URL"]; ?>"><?= $b['NAME']; ?></a></h6>
-                            <div class="card-rating stars-ratings">
+                    </li>
+                <? } ?>
+            </ul>
+        </nav>
+    </nav>
+<? if (count($popular) > 0) { ?>
+    <div class="row bluda_container  mt-2" id="menucat_popular">
 
-                                <svg width="18" viewBox="0 0 30 30" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M27.2035 11.1678C27.127 10.9426 26.9862 10.7446 26.7985 10.5985C26.6109 10.4523 26.3845 10.3643 26.1474 10.3453L19.2112 9.79418L16.2097 3.14996C16.1141 2.93597 15.9586 2.75421 15.762 2.62662C15.5654 2.49904 15.336 2.43108 15.1017 2.43095C14.8673 2.43083 14.6379 2.49853 14.4411 2.6259C14.2444 2.75327 14.0887 2.93486 13.9929 3.14875L10.9914 9.79418L4.05515 10.3453C3.82211 10.3638 3.59931 10.449 3.41343 10.5908C3.22754 10.7325 3.08643 10.9249 3.00699 11.1447C2.92754 11.3646 2.91311 11.6027 2.96544 11.8305C3.01776 12.0584 3.13462 12.2663 3.30204 12.4295L8.42785 17.4263L6.61502 25.2763C6.55997 25.5139 6.57762 25.7626 6.66566 25.99C6.7537 26.2175 6.90807 26.4132 7.10874 26.5519C7.30942 26.6905 7.54713 26.7656 7.79103 26.7675C8.03493 26.7693 8.27376 26.6978 8.47652 26.5623L15.1013 22.1458L21.726 26.5623C21.9333 26.6999 22.1777 26.7707 22.4264 26.7653C22.6751 26.7598 22.9161 26.6783 23.1171 26.5318C23.3182 26.3852 23.4695 26.1806 23.5507 25.9455C23.632 25.7104 23.6393 25.456 23.5717 25.2167L21.3464 17.43L26.8652 12.4635C27.2266 12.1375 27.3592 11.6289 27.2035 11.1678Z"
-                                          fill="currentColor"/>
-                                </svg>
+        <div class="col-12">
+            <h3 class="category_title">Популярные блюда <span>(<? echo count($popular); ?>)</span></h3>
 
-                                <svg width="18" viewBox="0 0 30 30" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M27.2035 11.1678C27.127 10.9426 26.9862 10.7446 26.7985 10.5985C26.6109 10.4523 26.3845 10.3643 26.1474 10.3453L19.2112 9.79418L16.2097 3.14996C16.1141 2.93597 15.9586 2.75421 15.762 2.62662C15.5654 2.49904 15.336 2.43108 15.1017 2.43095C14.8673 2.43083 14.6379 2.49853 14.4411 2.6259C14.2444 2.75327 14.0887 2.93486 13.9929 3.14875L10.9914 9.79418L4.05515 10.3453C3.82211 10.3638 3.59931 10.449 3.41343 10.5908C3.22754 10.7325 3.08643 10.9249 3.00699 11.1447C2.92754 11.3646 2.91311 11.6027 2.96544 11.8305C3.01776 12.0584 3.13462 12.2663 3.30204 12.4295L8.42785 17.4263L6.61502 25.2763C6.55997 25.5139 6.57762 25.7626 6.66566 25.99C6.7537 26.2175 6.90807 26.4132 7.10874 26.5519C7.30942 26.6905 7.54713 26.7656 7.79103 26.7675C8.03493 26.7693 8.27376 26.6978 8.47652 26.5623L15.1013 22.1458L21.726 26.5623C21.9333 26.6999 22.1777 26.7707 22.4264 26.7653C22.6751 26.7598 22.9161 26.6783 23.1171 26.5318C23.3182 26.3852 23.4695 26.1806 23.5507 25.9455C23.632 25.7104 23.6393 25.456 23.5717 25.2167L21.3464 17.43L26.8652 12.4635C27.2266 12.1375 27.3592 11.6289 27.2035 11.1678Z"
-                                          fill="currentColor"/>
-                                </svg>
+        </div>
+        <? foreach ($popular as $item) { ?>
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mt-3">
+                <div class="bludo">
+                    <div class="bludo_image">
+                        <div class="bludo_icons">
+      <span class="icon me-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Вкусное">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="vuesax_linear_weight" data-name="vuesax/linear/weight" transform="translate(-492 -508)">
+    <g id="weight">
+      <path id="Vector" d="M3,12c2.4,0,3-1.35,3-3V3c0-1.65-.6-3-3-3S0,1.35,0,3V9C0,10.65.6,12,3,12Z"
+            transform="translate(506.18 514)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"
+            stroke-width="1"/>
+      <path id="Vector-2" data-name="Vector"
+            d="M3,12C.6,12,0,10.65,0,9V3C0,1.35.6,0,3,0S6,1.35,6,3V9C6,10.65,5.4,12,3,12Z"
+            transform="translate(495.82 514)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"
+            stroke-width="1"/>
+      <path id="Vector-3" data-name="Vector" d="M0,0H4.36" transform="translate(501.82 520)" fill="none" stroke="#fff"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Vector-4" data-name="Vector" d="M0,5V0" transform="translate(514.5 517.5)" fill="none" stroke="#fff"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Vector-5" data-name="Vector" d="M0,5V0" transform="translate(493.5 517.5)" fill="none" stroke="#fff"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Vector-6" data-name="Vector" d="M0,0H24V24H0Z" transform="translate(492 508)" fill="none" opacity="0"/>
+    </g>
+  </g>
+</svg>
 
-                                <svg width="18" viewBox="0 0 30 30" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M27.2035 11.1678C27.127 10.9426 26.9862 10.7446 26.7985 10.5985C26.6109 10.4523 26.3845 10.3643 26.1474 10.3453L19.2112 9.79418L16.2097 3.14996C16.1141 2.93597 15.9586 2.75421 15.762 2.62662C15.5654 2.49904 15.336 2.43108 15.1017 2.43095C14.8673 2.43083 14.6379 2.49853 14.4411 2.6259C14.2444 2.75327 14.0887 2.93486 13.9929 3.14875L10.9914 9.79418L4.05515 10.3453C3.82211 10.3638 3.59931 10.449 3.41343 10.5908C3.22754 10.7325 3.08643 10.9249 3.00699 11.1447C2.92754 11.3646 2.91311 11.6027 2.96544 11.8305C3.01776 12.0584 3.13462 12.2663 3.30204 12.4295L8.42785 17.4263L6.61502 25.2763C6.55997 25.5139 6.57762 25.7626 6.66566 25.99C6.7537 26.2175 6.90807 26.4132 7.10874 26.5519C7.30942 26.6905 7.54713 26.7656 7.79103 26.7675C8.03493 26.7693 8.27376 26.6978 8.47652 26.5623L15.1013 22.1458L21.726 26.5623C21.9333 26.6999 22.1777 26.7707 22.4264 26.7653C22.6751 26.7598 22.9161 26.6783 23.1171 26.5318C23.3182 26.3852 23.4695 26.1806 23.5507 25.9455C23.632 25.7104 23.6393 25.456 23.5717 25.2167L21.3464 17.43L26.8652 12.4635C27.2266 12.1375 27.3592 11.6289 27.2035 11.1678Z"
-                                          fill="currentColor"/>
-                                </svg>
+      </span>
 
-                                <svg width="18" viewBox="0 0 30 30" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8.22826 17.4264L6.41543 25.2763C6.35929 25.514 6.37615 25.7631 6.46379 25.9911C6.55142 26.2191 6.70578 26.4153 6.90668 26.5542C7.10759 26.6931 7.34571 26.7682 7.58994 26.7696C7.83418 26.7711 8.07317 26.6988 8.27571 26.5623L14.9005 22.1458L21.5252 26.5623C21.7325 26.6999 21.9769 26.7708 22.2256 26.7653C22.4743 26.7599 22.7153 26.6784 22.9163 26.5318C23.1174 26.3853 23.2687 26.1807 23.3499 25.9456C23.4312 25.7105 23.4385 25.4561 23.3709 25.2167L21.1456 17.43L26.6644 12.4636C26.8412 12.3045 26.9674 12.097 27.0275 11.8668C27.0876 11.6367 27.0789 11.394 27.0025 11.1688C26.9261 10.9435 26.7854 10.7456 26.5977 10.5995C26.4101 10.4533 26.1837 10.3654 25.9466 10.3466L19.0104 9.79424L16.0088 3.15003C15.9131 2.93608 15.7576 2.75441 15.5609 2.62693C15.3642 2.49946 15.1348 2.43163 14.9005 2.43163C14.6661 2.43163 14.4367 2.49946 14.24 2.62693C14.0434 2.75441 13.8878 2.93608 13.7921 3.15003L10.7906 9.79424L3.85435 10.3454C3.6213 10.3639 3.39851 10.4491 3.21262 10.5908C3.02674 10.7326 2.88563 10.9249 2.80618 11.1448C2.72673 11.3646 2.71231 11.6027 2.76463 11.8306C2.81696 12.0584 2.93382 12.2664 3.10123 12.4295L8.22826 17.4264ZM11.6994 12.1631C11.9166 12.146 12.1251 12.0708 12.3032 11.9453C12.4813 11.8199 12.6224 11.6488 12.7117 11.4501L14.9005 6.60658L17.0892 11.4501C17.1785 11.6488 17.3196 11.8199 17.4977 11.9453C17.6758 12.0708 17.8843 12.146 18.1015 12.1631L22.9341 12.5463L18.9544 16.1282C18.6089 16.4397 18.4714 16.919 18.5979 17.3668L20.1224 22.7019L15.5769 19.6711C15.3774 19.5372 15.1426 19.4657 14.9023 19.4657C14.662 19.4657 14.4272 19.5372 14.2276 19.6711L9.47778 22.8381L10.7553 17.3072C10.8021 17.1037 10.7958 16.8917 10.737 16.6914C10.6782 16.4911 10.5689 16.3093 10.4195 16.1635L6.72325 12.5597L11.6994 12.1631Z"
-                                          fill="currentColor"/>
-                                </svg>
 
-                                <svg width="18" viewBox="0 0 30 30" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8.22826 17.4264L6.41543 25.2763C6.35929 25.514 6.37615 25.7631 6.46379 25.9911C6.55142 26.2191 6.70578 26.4153 6.90668 26.5542C7.10759 26.6931 7.34571 26.7682 7.58994 26.7696C7.83418 26.7711 8.07317 26.6988 8.27571 26.5623L14.9005 22.1458L21.5252 26.5623C21.7325 26.6999 21.9769 26.7708 22.2256 26.7653C22.4743 26.7599 22.7153 26.6784 22.9163 26.5318C23.1174 26.3853 23.2687 26.1807 23.3499 25.9456C23.4312 25.7105 23.4385 25.4561 23.3709 25.2167L21.1456 17.43L26.6644 12.4636C26.8412 12.3045 26.9674 12.097 27.0275 11.8668C27.0876 11.6367 27.0789 11.394 27.0025 11.1688C26.9261 10.9435 26.7854 10.7456 26.5977 10.5995C26.4101 10.4533 26.1837 10.3654 25.9466 10.3466L19.0104 9.79424L16.0088 3.15003C15.9131 2.93608 15.7576 2.75441 15.5609 2.62693C15.3642 2.49946 15.1348 2.43163 14.9005 2.43163C14.6661 2.43163 14.4367 2.49946 14.24 2.62693C14.0434 2.75441 13.8878 2.93608 13.7921 3.15003L10.7906 9.79424L3.85435 10.3454C3.6213 10.3639 3.39851 10.4491 3.21262 10.5908C3.02674 10.7326 2.88563 10.9249 2.80618 11.1448C2.72673 11.3646 2.71231 11.6027 2.76463 11.8306C2.81696 12.0584 2.93382 12.2664 3.10123 12.4295L8.22826 17.4264ZM11.6994 12.1631C11.9166 12.146 12.1251 12.0708 12.3032 11.9453C12.4813 11.8199 12.6224 11.6488 12.7117 11.4501L14.9005 6.60658L17.0892 11.4501C17.1785 11.6488 17.3196 11.8199 17.4977 11.9453C17.6758 12.0708 17.8843 12.146 18.1015 12.1631L22.9341 12.5463L18.9544 16.1282C18.6089 16.4397 18.4714 16.919 18.5979 17.3668L20.1224 22.7019L15.5769 19.6711C15.3774 19.5372 15.1426 19.4657 14.9023 19.4657C14.662 19.4657 14.4272 19.5372 14.2276 19.6711L9.47778 22.8381L10.7553 17.3072C10.8021 17.1037 10.7958 16.8917 10.737 16.6914C10.6782 16.4911 10.5689 16.3093 10.4195 16.1635L6.72325 12.5597L11.6994 12.1631Z"
-                                          fill="currentColor"/>
-                                </svg>
-                            </div>
-                            <div class="d-flex justify-content-between mt-3">
-                                <div class="d-flex align-items-center">
-                                    <span class="text-primary fw-bolder me-2"><?= $b[PROPERTIES][PRICE][VALUE]; ?></span>
-                                    <small class="text-decoration-line-through">$8.49</small>
-                                </div>
-                                <a class="product-buy-link" data-id="<?= $b['ID'] ?>">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <rect class="circle-1" width="24" height="24" rx="12"
-                                              fill="currentColor"/>
-                                        <rect class="circle-2" x="11.168" y="7" width="1.66667"
-                                              height="10"
-                                              rx="0.833333" fill="currentColor"/>
-                                        <rect class="circle-3" x="7" y="12.834" width="1.66666"
-                                              height="10"
-                                              rx="0.833332" transform="rotate(-90 7 12.834)"
-                                              fill="currentColor"/>
-                                    </svg>
-                                </a>
-                            </div>
+                            <span class="icon me-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                  data-bs-original-title="Акция 1+1">
+<svg xmlns="http://www.w3.org/2000/svg" width="37" height="21" viewBox="0 0 37 21">
+  <text id="_1_1" data-name="1 + 1" transform="translate(0 17)" fill="#fff" font-size="16"
+        font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">1 + 1</tspan></text>
+</svg>
+
+
+      </span>
+
                         </div>
+
+
+                        <?
+                        $file = CFile::ResizeImageGet($item['PREVIEW_PICTURE'], array('width' => 346, 'height' => 231), BX_RESIZE_IMAGE_EXACT, true);
+
+                        ?>
+
+                        <img src="<?= $file['src']; ?>" class="img-fluid"
+                             alt="Заказать <?= $item['NAME']; ?> с доставкой">
                     </div>
+
+                    <span class="bludo_title">
+                  <?= $item['NAME']; ?>
+
+               </span>
+                    <span class="bludo_desc">
+                 <?= $item['PREVIEW_TEXT']; ?>
+               </span>
+                    <span class="bludo_footer">
+<span class="d-flex justify-content-between mt-2 mb-2">
+    <? if ($item['PROPERTIES']['OLD_PRICE']['VALUE'] > 0) { ?>
+        <span class="old_price"><s><?= $item['PROPERTIES']['OLD_PRICE']['VALUE']; ?> &#x20bd;</s></span>
+    <? } ?>
+    <span class="bludo_price"><?= $item['PROPERTIES']['PRICE']['VALUE'] ?> &#x20bd;</span>
+ <? if (empty($item['adds'])) { ?>
+     <!-- У блюда нет добавок -->
+     <button class="btn btn-sm  btn-primary rounded-pill product-buy-link" data-id="<?=$item['ID'];?>" data-weight="<?=$item['PROPERTIES']['WEIGHT']['VALUE'];?>">Заказать</button>
+ <? } else { ?>
+     <!-- Есть добавки -->
+     <button class="btn btn-sm js-ajax-adds btn-primary rounded-pill" data-id="<?=$item['ID'];?>" data-weight="<?=$item['PROPERTIES']['WEIGHT']['VALUE'];?>" data-data='{"ID":<?=$item['ID'];?>,"action":"Action_showAdds"}' >Заказать</button>
+
+ <? } ?>
+</span>
+</span>
+
                 </div>
 
-
-            <? } ?>
-        </div>
-
-        </div>
+            </div>
+        <? } ?>
     </div>
-    <?}?>
+<? } ?>
 
-</div>
+
+<?
+foreach ($sects as $key => $s) {
+
+    $bluda = \Realweb\Site\Catalog::get_bluda_categ($s['ID']);
+    ?>
+    <div class="row bluda_container  mt-5" id="menucat_<?= $s['ID']; ?>">
+
+        <div class="col-12">
+            <h3 class="category_title"><?= $s['NAME'] ?> <span>(<?= count($bluda); ?>)</span></h3>
+        </div>
+        <?
+        foreach ($bluda as $item) {
+            ?>
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mt-3">
+                <div class="bludo">
+                    <?
+                    $file = CFile::ResizeImageGet($item['PREVIEW_PICTURE'], array('width' => 346, 'height' => 231), BX_RESIZE_IMAGE_EXACT, true);
+
+                    ?>
+
+                    <img src="<?= $file['src']; ?>" class="img-fluid" alt="Заказать <?= $item['NAME']; ?> с доставкой">
+
+
+                    <span class="bludo_title">
+         <?= $item['NAME']; ?>
+
+               </span>
+                    <span class="bludo_desc">
+                 <?= $item['PREVIEW_TEXT']; ?>
+               </span>
+                    <span class="bludo_footer">
+<span class="d-flex justify-content-between mt-2 mb-2">
+
+     <? if ($item['PROPERTIES']['OLD_PRICE']['VALUE'] > 0) { ?>
+         <span class="old_price"><s><?= $item['PROPERTIES']['OLD_PRICE']['VALUE']; ?> &#x20bd;</s></span>
+     <? } ?>
+    <span class="bludo_price"><?= $item['PROPERTIES']['PRICE']['VALUE'] ?> &#x20bd;</span>
+    <? if (empty($item['adds'])) { ?>
+        <!-- У блюда нет добавок -->
+        <button class="btn btn-sm  btn-primary rounded-pill product-buy-link" data-id="<?=$item['ID'];?>" data-weight="<?=$item['PROPERTIES']['WEIGHT']['VALUE'];?>">Заказать</button>
+    <? } else { ?>
+        <!-- Есть добавки -->
+        <button class="btn btn-sm js-ajax-adds btn-primary rounded-pill" data-id="<?=$item['ID'];?>" data-weight="<?=$item['PROPERTIES']['WEIGHT']['VALUE'];?>" data-data='{"ID":<?=$item['ID'];?>,"action":"Action_showAdds"}' >Заказать</button>
+
+    <? } ?>
+</span>
+</span>
+
+                </div>
+
+            </div>
+        <? } ?>
+
+    </div>
+<? } ?>

@@ -21,7 +21,43 @@ class Action
 
         return $this->_request;
     }
+    public function showAdds(){
+        \CModule::IncludeModule('highloadblock');
+      //Загружает добавки
+        $hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getById(2)->fetch();
 
+        $entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hlblock);
+        $entity_data_class = $entity->getDataClass();
+        $rsData = $entity_data_class::getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array("UF_BLUDO"=>$this->_getRequest()->get('ID'))  // Задаем параметры фильтра выборки
+        ));
+        $vals=[];
+$html='';
+        while($arData = $rsData->Fetch()){
+$html.='<div class="form-check bludo-variant col-6">
+                            <input class="form-check-input bludo_add" type="checkbox" data-price="'.$arData['UF_ZNAK'].$arData['UF_PRICE'].'" data-text="'.$arData['UF_NAME'].'"  id="flexCheckDefault11">
+                            <label class="form-check-label" for="flexCheckDefault11">
+                                '.$arData['UF_NAME'].' <span>'.$arData['UF_ZNAK'].$arData['UF_PRICE'].' &#x20bd;</span>
+                            </label>
+                        </div>';
+            $vals[]=$arData;
+        }
+
+
+        return array('message' => 'Добавки загружены','html'=>$html, 'reload' => false);
+
+    }
+    public function changeCity()
+    {
+        if ($id = intval($this->_getRequest()->get('ID'))) {
+            Site::setCookie('city', $id, (time() + 60 * 60 * 24 * 30));
+            //User::getInstance()->clearBasket();
+
+            return array('message' => 'Город успешно изменен', 'reload' => true);
+        }
+    }
     public function formSubmit()
     {
         $request = $this->_getRequest();

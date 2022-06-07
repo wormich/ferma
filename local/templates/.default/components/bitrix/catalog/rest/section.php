@@ -2,12 +2,7 @@
 global $APPLICATION;
 
 
-$APPLICATION->IncludeComponent("bitrix:breadcrumb", "", array(
-        "START_FROM" => "0",
-        "PATH" => "",
-        "SITE_ID" => "s1"
-    )
-);
+
 
 $path_array = explode('/', $arResult['VARIABLES']['SECTION_CODE_PATH']);
 
@@ -23,53 +18,6 @@ if (count($path_array) == 3) {
 ?>
 
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card mb-3" data-iq-gsap="onStart" data-iq-opacity="0" data-iq-position-y="-40" data-iq-duration=".6"
-             data-iq-delay=".4" data-iq-trigger="scroll" data-iq-ease="none"
-             style="transform: translate(0px, 0px); opacity: 1;">
-            <div>
-
-                <div class="mt-3 iq-fetch">
-                    <?
-                    $current_code = '';
-
-                    if ($arResult['VARIABLES']['SECTION_CODE']) {
-
-                        $current_code = $arResult['VARIABLES']['SECTION_CODE'];
-                    }
-
-                    ?>
-
-                    <? $APPLICATION->IncludeComponent("bitrix:catalog.section.list", "menu_cats",
-                        array(
-                            "VIEW_MODE" => "TEXT",
-                            "SHOW_PARENT_NAME" => "Y",
-                            "IBLOCK_TYPE" => "",
-                            "IBLOCK_ID" => \Realweb\Site\Site::getIblockId('rest'),
-                            "SECTION_ID" => 0,
-                            "SECTION_CODE" => "",
-                            "SECTION_URL" => "",
-                            "COUNT_ELEMENTS" => "N",
-                            "TOP_DEPTH" => "1",
-                            "SECTION_FIELDS" => "",
-                            "SECTION_USER_FIELDS" => "",
-                            "ADD_SECTIONS_CHAIN" => "Y",
-                            "CACHE_TYPE" => "A",
-                            "CACHE_TIME" => "36000000",
-                            "CACHE_NOTES" => "",
-                            "CACHE_GROUPS" => "Y",
-                            "CURRENT_SECTION" => $current_code
-                        )
-                    ); ?>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
 <?php
 $intSectionID = $APPLICATION->IncludeComponent(
     "bitrix:catalog.section", "", array(

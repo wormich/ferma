@@ -6,10 +6,23 @@ use Bitrix\Main\Application;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Data\Cache;
 use Bitrix\Main\UserFieldTable;
+use Realweb\Site\Entity\City;
+use Realweb\Site\Geo\Base;
+use Realweb\Site\Table\CityTable;
 
 class Site
 {
     protected static $instance;
+
+    /**
+     * @var \Realweb\Site\Table\EO_City
+     */
+    private $_city = null;
+
+    /**
+     * @var bool
+     */
+    private $_use_geo = false;
 
     public static function getInstance()
     {
@@ -371,5 +384,61 @@ class Site
     function getPathbyBludo($id=0){
         //Получает путь к блюду
 
+    }
+    public function getCityGeo()
+    {
+        $geo = new Base();
+        $this->setUseGeo();
+
+        return $geo->getCity();
+    }
+
+    public function setUseGeo($use = true)
+    {
+        $this->_use_geo = $use;
+
+        return $this;
+    }
+
+    public function isUseGeo()
+    {
+        return $this->_use_geo;
+    }
+
+    private function _getCity($filter = array())
+    {
+        return CityTable::query()
+            ->setSelect(array('*'))
+            ->setFilter($filter)
+            ->setLimit(1)
+            ->exec()
+            ->fetchObject();
+    }
+
+
+    public function getCity()
+    {
+        if ($this->_city === null) {
+            if ($cityId = Application::getInstance()->getContext()->getRequest()->getCookie('city')) {
+                $this->_city = $this->_getCity(array('ID' => $cityId));
+            }
+            if (!$this->_city) {
+                if ($city = $this->getCityGeo()) {
+                    $this->_city = $this->_getCity(array('UF_NAME' => $city['city']['name_ru']));
+                    if ($this->_city) {
+                        self::setCookie('city', $this->_city->getId(), (time() + 60 * 60 * 24 * 30));
+                    }
+                }
+            }
+            if (!$this->_city) {
+                $this->_city = $this->_getCity();
+            }
+        }
+
+        return $this->_city;
+    }
+    public static function isLocal()
+    {
+        return stripos(Application::getInstance()->getContext()->getRequest()->getHttpHost(), '.loc') !== false;
     }
 }

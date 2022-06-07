@@ -8,6 +8,9 @@ AddEventHandler("main", "OnBeforeUserRegister", Array("Realweb\Site\Handlers", "
 AddEventHandler("main", "OnBeforeUserUpdate", Array("Realweb\Site\Handlers", "OnBeforeUserAdd"));
 AddEventHandler("main", "OnAfterUserAdd", Array("Realweb\Site\Handlers", "OnAfterUserAdd"));
 
+AddEventHandler("bee_cart", "OnBeforeItemAdd", Array("Realweb\Site\Handlers", "OnBeforeItemAddHandler"));
+AddEventHandler("bee_cart", "OnAfterItemLoad", Array("Realweb\Site\Handlers", "OnAfterItemLoadHandler"));
+
 
 
 function onPageStart()

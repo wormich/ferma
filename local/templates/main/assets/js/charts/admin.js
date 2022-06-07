@@ -106,7 +106,7 @@
               offsetX: -5
           },
           xaxis: {
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              categories: ['Январь', 'Февраль', 'Март', 'Апрель', 'Март', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
               labels: {
                   minHeight: 20,
                   maxHeight: 20,
@@ -244,8 +244,8 @@
   if (jQuery('#admin-chart-4').length) {
       const options = {
           series: [{
-              name: "Total sales",
-              data: [10, 10, 35, 10]
+              name: "Выручка",
+              data: [1400,1550 ,2800,4200,5560]
           }],
           colors: ["#EA6A12"],
           chart: {
@@ -271,7 +271,7 @@
           },
 
           xaxis: {
-              categories: ['Jan', 'Feb', 'Mar'],
+              categories: ['Январь', 'Февраль', 'Март','Апрель','Май'],
           }
       };
 
@@ -398,8 +398,8 @@
   if (jQuery("#admin-chart-7").length) {
       const options = {
           series: [{
-              name: 'Количество заказов по дням',
-              data: [15, 11, 20, 9, 6, 12, 14]
+              name: 'Product',
+              data: [3.3, 2.9, 3.8, 9.1, 6.0, 2.8, 4.5]
           }],
           chart: {
               height: 160,
@@ -470,7 +470,7 @@
               enabled: true,
           },
           xaxis: {
-              categories: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+              categories: ["Sun", "Mon", "The", "Wed", "Thu", "Fri", "Sat"],
               labels: {
                   minHeight: 20,
                   maxHeight: 20
@@ -495,7 +495,7 @@
                   minWidth: 20,
                   maxWidth: 20,
                   formatter: function(val) {
-                      return val;
+                      return val + "%";
                   }
               }
 
@@ -519,20 +519,20 @@
           switch (type) {
               case 'member':
                   searies = [{
-                      name: 'Выручка, тыс. руб.',
+                      name: 'Product',
                       data: [9.3, 3.9, 8.8, 4.1, 6.0, 2.8, 4.5]
                   }]
                   break;
               case 'customer':
                   searies = [{
-                      name: 'Новых клиентов',
-                      data: [32, 28, 45, 47, 91, 86, 52]
+                      name: 'Product',
+                      data: [3.2, 2.8, 4.5, 4.7, 9.1, 8.6, 5.2]
                   }]
                   break;
               default:
                   searies = [{
-                      name: 'Количество заказов по дням',
-                      data: [15, 11, 20, 9, 6, 12, 14]
+                      name: 'member',
+                      data: [3.3, 2.9, 3.8, 9.1, 6.0, 2.8, 4.5]
                   }]
                   break;
           }
