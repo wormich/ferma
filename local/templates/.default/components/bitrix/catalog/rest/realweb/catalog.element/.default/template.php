@@ -39,7 +39,7 @@ $OTZ_IBLOCK = \Realweb\Site\Site::getIblockId('otz');
                                             <?= $val; ?>
                                         <? } ?>
                                     </p>
-                                    <? if ($arResult['PROPERTIES']['TIME_1']['VALUE'] > 0) { ?>
+                                    <? if ($arResult['PROPERTIES']['MIN_PRICE']['VALUE'] > 0) { ?>
                                         <p> Заказ от <?= $arResult['PROPERTIES']['MIN_PRICE']['VALUE'] ?>₽</p>
                                     <? } ?>
                                 </div>
