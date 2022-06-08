@@ -3,10 +3,29 @@
 
 use \Bitrix\Main\Localization\Loc;
 
-$this->addExternalCss($templateFolder . "/css/media.css");
+
 $blockId = 'bee_cart';
 ?>
+<?php
 
+
+
+$cart = CBeeCart::getUserCartData('s1');
+if (is_array($cart) && !empty($cart)) {
+
+    $bludo_id = $cart[0]['PRODUCT_ID'];
+
+    $rest_data = \Realweb\Site\Catalog::getRestByBludo($bludo_id);
+}
+if (!empty($rest_data)) {
+
+    $time1 = $rest_data['PROPERTIES']['TIME_1']['VALUE'];
+    $time2 = $rest_data['PROPERTIES']['TIME_2']['VALUE'];
+    $time_to_dost = $rest_data['PROPERTIES']['TIME_TO_DOST']['VALUE'];
+
+}
+
+?>
 
 <template v-if="ELEMENTS.length > 0">
 
@@ -35,29 +54,51 @@ $blockId = 'bee_cart';
 
 
 <div class="bubble">
+    <?
+
+    $t1 = explode(':', $time1);
+    //Час со скольки
+
+    $t1h = $t1[0];
+
+    $t2 = explode(':',$time2);
+
+    //Час до скольки
+    $t2h = $t2[0];
+
+    //Текущее время
+    $h = date('H');
+
+    if ($h>$t1h&&$h<$t2h){
+        $act=0;
+
+    }else{
+        $act=1;
+    }
+    ?>
 
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <?if ($act==0){?>
         <li class="nav-item">
             <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#tab-today"
                role="tab" aria-controls="tab-today" aria-selected="true">Сегодня</a>
         </li>
+        <?}?>
         <li class="nav-item">
-            <a class="nav-link" id="tab-tomorrow-tab" data-bs-toggle="pill" href="#tab-tomorrow"
+            <a class="nav-link<?if ($act==1){?> active<?}?>" id="tab-tomorrow-tab" data-bs-toggle="pill" href="#tab-tomorrow"
                role="tab" aria-controls="tab-tomorrow" aria-selected="false">Завтра</a>
         </li>
 
     </ul>
     <div class="tab-content" id="pills-tabContent-2">
+        <?if ($act==0){?>
         <div class="tab-pane fade show active" id="tab-today" role="tabpanel" aria-labelledby="pills-home-tab">
             <div class="time_container">
                 <ul class="DesktopDeliveryTimePane_timeList">
                     <li class="DesktopDeliveryTimePane_timeItemNow DesktopDeliveryTimePane_timeItem"
-                        data-time="25-30 мин.">Сейчас
+                        data-time="<?=$time_to_dost;?>">Сейчас
                     </li>
-                    <? $h = date('H');
-
-                    ?>
-                    <? for ($i = $h + 1; $i < 24; $i++) { ?>
+                    <?for ($i=$h+1;$i<$t2h;$i++){?>
                         <?
                         if ($i < 10) {
                             $i = '0' . $i;
@@ -65,10 +106,11 @@ $blockId = 'bee_cart';
                         ?>
                         <li class="DesktopDeliveryTimePane_timeItem" data-time="<?= $i; ?>:00"><?= $i; ?>:00</li>
                         <li class="DesktopDeliveryTimePane_timeItem" data-time="<?= $i; ?>:30"><?= $i; ?>:30</li>
-                    <? } ?>
+                    <?}?>
                 </ul>
             </div>
         </div>
+        <?}?>
         <div class="tab-pane fade" id="tab-tomorrow" role="tabpanel" aria-labelledby="pills-profile-tab">
             <div class="time_container">
                 <ul class="DesktopDeliveryTimePane_timeList">
@@ -91,12 +133,13 @@ $blockId = 'bee_cart';
 </div>
 <div class="cart_footer d-flex justify-content-between align-items-center mt-4" v-if="ELEMENTS.length > 0">
 
-
+<!--
     <div class="time_dost">
         <span class="label">Время доставки</span>
-        <span id="time_result">25-30 мин.</span>
+        <span id="time_result"><?=$time_to_dost;?></span>
 
     </div>
+    -->
     <div class="itogo">
 
         <span class="label">Итого</span>
